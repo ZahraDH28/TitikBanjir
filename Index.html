@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map Banjir Baleendah</title>
+
+    <!-- Leaflet CSS & JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Poppins", sans-serif;
+            background: #f4f6f9;
+        }
+
+        header {
+            background: #4a89dc;
+            color: white;
+            padding: 20px 30px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            background: white;
+            padding: 20px 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+        }
+
+        #map {
+            height: 75vh;
+            width: 100%;
+            border-radius: 12px;
+        }
+
+        .title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Map Banjir Baleendah</h1>
+</header>
+
+<div class="container">
+    <div class="title">Map Leaflet GeoJSON</div>
+    <div class="subtitle">Menampilkan beberapa titik koordinat Banjir dari GeoJSON.</div>
+
+    <div id="map"></div>
+</div>
+
+
+<script>
+    // Inisialisasi map
+    var map = L.map('map').setView([-6.99, 107.63], 12);
+
+    // Tile layer OSM
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // =============================
+    //   GEOJSON DATA
+    // =============================
+    var geojsonData = {
+        "type": "FeatureCollection",
+        "features": [
+            {
+              "type": "Feature",
+              "properties": { "name": "Titik Banjir 1" },
+              "geometry": {
+                "coordinates": [107.6323642616801, -7.006669598082468],
+                "type": "Point"
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": { "name": "Titik Banjir 2" },
+              "geometry": {
+                "coordinates": [107.62647172589112, -6.988287893464005],
+                "type": "Point"
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": { "name": "Titik Banjir 3" },
+              "geometry": {
+                "coordinates": [107.64362494852747, -7.014218003086313],
+                "type": "Point"
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": { "name": "Titik Banjir 4" },
+              "geometry": {
+                "coordinates": [107.63127228344388, -6.992656142720335],
+                "type": "Point"
+              }
+            }
+        ]
+    };
+
+    // =============================
+    //   TAMBAH GEOJSON KE MAP
+    // =============================
+    L.geoJSON(geojsonData, {
+        pointToLayer: function(feature, latlng) {
+            return L.marker(latlng).bindPopup(
+                "<b>Lokasi:</b> " + (feature.properties.name || "Tanpa Nama") +
+                "<br>Lat: " + latlng.lat.toFixed(5) +
+                "<br>Lng: " + latlng.lng.toFixed(5)
+            );
+        }
+    }).addTo(map);
+
+</script>
+
+</body>
+</html>
